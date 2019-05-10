@@ -30,6 +30,8 @@ use SimpleThings\EntityAudit\AuditManager;
 use Doctrine\ORM\Tools\Event\GenerateSchemaTableEventArgs;
 use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
 use Doctrine\Common\EventSubscriber;
+use Fresh\DoctrineEnumBundle\DBAL\Types\AbstractEnumType;
+use Doctrine\DBAL\Types\Type;
 
 class CreateSchemaListener implements EventSubscriber
 {
