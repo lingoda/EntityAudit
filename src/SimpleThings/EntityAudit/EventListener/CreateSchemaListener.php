@@ -97,8 +97,8 @@ class CreateSchemaListener implements EventSubscriber
             // change Enum type to String
             $sqlString = $column->getType()->getSQLDeclaration(array(), $this->connection->getDatabasePlatform());
             if ($this->config->convertEnumToString() && strpos($sqlString, "ENUM") !== false) {
-                $columnType = Type::STRING;
-                $columnArray['type'] = Type::getType($columnType);
+                $columnTypeName = Type::STRING;
+                $columnArrayOptions['type'] = Type::getType($columnTypeName);
             }
 
             /* @var Column $column */
