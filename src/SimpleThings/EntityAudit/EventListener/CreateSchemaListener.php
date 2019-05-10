@@ -55,8 +55,6 @@ class CreateSchemaListener implements EventSubscriber
         $this->config = $auditManager->getConfiguration();
         $this->metadataFactory = $auditManager->getMetadataFactory();
         $this->connection = $connection;
-
-        parent::__construct($auditManager);
     }
 
     public function getSubscribedEvents()

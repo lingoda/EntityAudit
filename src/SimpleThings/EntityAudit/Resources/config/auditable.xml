@@ -36,6 +36,7 @@
 
         <service id="simplethings_entityaudit.create_schema_listener" class="SimpleThings\EntityAudit\EventListener\CreateSchemaListener">
             <argument id="simplethings_entityaudit.manager" type="service" />
+            <argument id="Doctrine\DBAL\Connection" type="service" />
             <tag name="doctrine.event_subscriber" connection="default" />
         </service>
 
