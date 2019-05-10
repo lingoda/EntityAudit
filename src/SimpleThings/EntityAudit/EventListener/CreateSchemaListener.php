@@ -30,8 +30,8 @@ use SimpleThings\EntityAudit\AuditManager;
 use Doctrine\ORM\Tools\Event\GenerateSchemaTableEventArgs;
 use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
 use Doctrine\Common\EventSubscriber;
-use Fresh\DoctrineEnumBundle\DBAL\Types\AbstractEnumType;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Connection;
 
 class CreateSchemaListener implements EventSubscriber
 {
@@ -45,10 +45,18 @@ class CreateSchemaListener implements EventSubscriber
      */
     private $metadataFactory;
 
-    public function __construct(AuditManager $auditManager)
+    /**
+     * @var Connection
+     */
+    private $connection;
+
+    public function __construct(AuditManager $auditManager, Connection $connection)
     {
         $this->config = $auditManager->getConfiguration();
         $this->metadataFactory = $auditManager->getMetadataFactory();
+        $this->connection = $connection;
+
+        parent::__construct($auditManager);
     }
 
     public function getSubscribedEvents()
@@ -87,9 +95,10 @@ class CreateSchemaListener implements EventSubscriber
             $columnTypeName = $column->getType()->getName();
             $columnArrayOptions = $column->toArray();
             // change Enum type to String
-            if ($this->config->convertEnumToString() && $column->getType() instanceof AbstractEnumType) {
-                $columnTypeName = Type::STRING;
-                $columnArrayOptions['type'] = Type::getType(Type::STRING);
+            $sqlString = $column->getType()->getSQLDeclaration(array(), $this->connection->getDatabasePlatform());
+            if ($this->config->convertEnumToString() && strpos($sqlString, "ENUM") !== false) {
+                $columnType = Type::STRING;
+                $columnArray['type'] = Type::getType($columnType);
             }
 
             /* @var Column $column */
