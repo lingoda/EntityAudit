@@ -81,10 +81,18 @@ class CreateSchemaListener implements EventSubscriber
             $this->config->getTablePrefix().$entityTable->getName().$this->config->getTableSuffix()
         );
 
-        foreach ($entityTable->getColumns() AS $column) {
+        foreach ($entityTable->getColumns() as $column) {
+            $columnTypeName = $column->getType()->getName();
+            $columnArrayOptions = $column->toArray();
+            // change Enum type to String
+            if ($this->config->convertEnumToString() && $column->getType() instanceof AbstractEnumType) {
+                $columnTypeName = Type::STRING;
+                $columnArrayOptions['type'] = Type::getType(Type::STRING);
+            }
+
             /* @var Column $column */
-            $revisionTable->addColumn($column->getName(), $column->getType()->getName(), array_merge(
-                $column->toArray(),
+            $revisionTable->addColumn($column->getName(), $columnTypeName, array_merge(
+                $columnArrayOptions,
                 array('notnull' => false, 'autoincrement' => false)
             ));
         }

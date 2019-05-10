@@ -71,6 +71,9 @@
             <call method="setUsernameCallable">
                 <argument type="service" id="simplethings_entityaudit.username_callable" />
             </call>
+            <call method="setConvertEnumToString">
+                <argument>%simplethings.entityaudit.convert_enum_to_string%</argument>
+            </call>
         </service>
 
         <service id="SimpleThings\EntityAudit\AuditConfiguration" alias="simplethings_entityaudit.config" />
