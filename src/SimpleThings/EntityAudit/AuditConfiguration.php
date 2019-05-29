@@ -29,6 +29,7 @@ class AuditConfiguration
 {
     private $auditedEntityClasses = array();
     private $globalIgnoreColumns = array();
+    private $ignoreColumnForTable = array();
     private $tablePrefix = '';
     private $tableSuffix = '_audit';
     private $revisionTableName = 'revisions';
@@ -130,6 +131,16 @@ class AuditConfiguration
     public function setGlobalIgnoreColumns(array $columns)
     {
         $this->globalIgnoreColumns = $columns;
+    }
+
+    public function getIgnoreColumnForTable()
+    {
+        return $this->ignoreColumnForTable;
+    }
+
+    public function setIgnoreColumnForTable(array $fields)
+    {
+        $this->ignoreColumnForTable = $fields;
     }
 
     public function createMetadataFactory()

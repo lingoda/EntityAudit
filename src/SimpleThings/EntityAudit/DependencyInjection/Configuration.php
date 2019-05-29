@@ -25,6 +25,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('revision_table_name')->defaultValue('revisions')->end()
                 ->scalarNode('revision_id_field_type')->defaultValue('integer')->end()
                 ->scalarNode('convert_enum_to_string')->defaultFalse()->end()
+                ->scalarNode('ignore_column_for_table')->defaultValue(array())->end()
                 ->arrayNode('service')
                     ->addDefaultsIfNotSet()
                     ->children()

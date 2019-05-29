@@ -168,7 +168,7 @@ class LogRevisionsListener implements EventSubscriber
                             sprintf('Could not resolve database type for column "%s" during extra updates', $column)
                         );
                     }
-                    
+
                     $types[] = $type;
                 }
 
@@ -375,6 +375,11 @@ class LogRevisionsListener implements EventSubscriber
                     continue;
                 }
 
+                //ignore specific fields for table
+                if(in_array($class->getTableName() . "." . $field , $this->config->getIgnoreColumnForTable())){
+                    continue;
+                }
+
                 $type = Type::getType($class->fieldMappings[$field]['type']);
                 $placeholders[] = (! empty($class->fieldMappings[$field]['requireSQLConversion']))
                     ? $type->convertToDatabaseValueSQL('?', $this->platform)
@@ -452,6 +457,11 @@ class LogRevisionsListener implements EventSubscriber
                 && $class->isInheritedField($field)
                 && ! $class->isIdentifier($field)
             ) {
+                continue;
+            }
+
+            //ignore specific fields for table
+            if(in_array($class->getTableName() . "." . $field , $this->config->getIgnoreColumnForTable())){
                 continue;
             }
 
