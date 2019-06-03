@@ -93,7 +93,7 @@ class CreateSchemaListener implements EventSubscriber
             $columnTypeName = $column->getType()->getName();
             $columnArrayOptions = $column->toArray();
             // ignore column
-            if(in_array($entityTable->getName()."." . $column->getName() , $this->config->getIgnoreColumnForTable())){
+            if(in_array($entityTable->getName()."." . $column->getName() , $this->config->getTableIgnoreColumns())){
                 continue;
             }
 

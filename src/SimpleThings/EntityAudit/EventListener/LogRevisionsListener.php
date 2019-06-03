@@ -169,6 +169,7 @@ class LogRevisionsListener implements EventSubscriber
                         );
                     }
                     $types[] = $type;
+
                 }
 
                 $types[] = $this->config->getRevisionIdFieldType();
@@ -375,7 +376,7 @@ class LogRevisionsListener implements EventSubscriber
                 }
 
                 //ignore specific fields for table
-                if(in_array($class->getTableName() . "." . $field , $this->config->getIgnoreColumnForTable())){
+                if(in_array($class->getTableName() . "." . $field , $this->config->getTableIgnoreColumns())){
                     continue;
                 }
 
@@ -460,7 +461,7 @@ class LogRevisionsListener implements EventSubscriber
             }
 
             //ignore specific fields for table
-            if(in_array($class->getTableName() . "." . $field , $this->config->getIgnoreColumnForTable())){
+            if(in_array($class->getTableName() . "." . $field , $this->config->getTableIgnoreColumns())){
                 continue;
             }
 
