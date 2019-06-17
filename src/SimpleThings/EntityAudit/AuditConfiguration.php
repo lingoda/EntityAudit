@@ -143,6 +143,11 @@ class AuditConfiguration
         $this->tableIgnoreColumns = $fields;
     }
 
+    public function isIgnoredField(string $field)
+    {
+        return in_array($field, $this->getTableIgnoreColumns());
+    }
+
     public function createMetadataFactory()
     {
         return new Metadata\MetadataFactory($this->auditedEntityClasses);
