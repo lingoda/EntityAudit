@@ -145,7 +145,12 @@ class AuditConfiguration
 
     public function isIgnoredField(string $field)
     {
-        return in_array($field, $this->getTableIgnoreColumns());
+        $camelize = str_replace('_', '', ucwords($field, '_'));
+        $underscore = strtolower(preg_replace('%([a-z])([A-Z])%', '\1_\2', $field));
+
+        return in_array($field, $this->getTableIgnoreColumns())
+               || in_array($camelize, $this->getTableIgnoreColumns())
+               || in_array($underscore, $this->getTableIgnoreColumns());
     }
 
     public function createMetadataFactory()
