@@ -94,7 +94,7 @@ class CreateSchemaListener implements EventSubscriber
             $columnArrayOptions = $column->toArray();
 
             //ignore specific fields for table
-            if ($this->config->isIgnoredField($entityTable->getName()."." . $column->getName())) {
+            if ($this->config->isIgnoredColumn($entityTable->getName()."." . $column->getName())) {
                 continue;
             }
 

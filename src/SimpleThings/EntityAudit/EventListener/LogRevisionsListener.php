@@ -139,7 +139,7 @@ class LogRevisionsListener implements EventSubscriber
                 }
 
                 //ignore specific fields for table
-                if ($this->config->isIgnoredField($meta->table['name'] . "." . $column)) {
+                if ($this->config->isIgnoredEntityField($meta->table['name'] . "." . $column)) {
                     continue;
                 }
 
@@ -238,7 +238,7 @@ class LogRevisionsListener implements EventSubscriber
         }
 
         // Make sure that ignored columns for table are removed from the changeset
-        foreach ($this->config->getTableIgnoreColumns() as $column) {
+        foreach ($this->config->getTableIgnoredColumns() as $column) {
             $columnName = str_replace($class->getTableName() . '.', '', $column);
             if (isset($changeset[$columnName])) {
                 unset($changeset[$columnName]);
@@ -389,7 +389,7 @@ class LogRevisionsListener implements EventSubscriber
                 }
 
                 //ignore specific fields for table
-                if ($this->config->isIgnoredField($class->getTableName() . "." . $field)) {
+                if ($this->config->isIgnoredEntityField($class->getTableName() . "." . $field)) {
                     continue;
                 }
 
@@ -474,7 +474,7 @@ class LogRevisionsListener implements EventSubscriber
             }
 
             //ignore specific fields for table
-            if ($this->config->isIgnoredField($class->getTableName() . "." . $field)) {
+            if ($this->config->isIgnoredEntityField($class->getTableName() . "." . $field)) {
                 continue;
             }
 

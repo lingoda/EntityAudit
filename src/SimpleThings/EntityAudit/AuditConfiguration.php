@@ -29,7 +29,8 @@ class AuditConfiguration
 {
     private $auditedEntityClasses = array();
     private $globalIgnoreColumns = array();
-    private $tableIgnoreColumns = array();
+    private $tableIgnoredColumns = array();
+    private $tableIgnoredEntities = array();
     private $tablePrefix = '';
     private $tableSuffix = '_audit';
     private $revisionTableName = 'revisions';
@@ -133,24 +134,29 @@ class AuditConfiguration
         $this->globalIgnoreColumns = $columns;
     }
 
-    public function getTableIgnoreColumns()
+    public function getTableIgnoredColumns()
     {
-        return $this->tableIgnoreColumns;
+        return $this->tableIgnoredColumns;
     }
 
-    public function setTableIgnoreColumn(array $fields)
+    public function setTableIgnoredColumns(array $fields)
     {
-        $this->tableIgnoreColumns = $fields;
+        foreach($fields as $field){
+            $this->tableIgnoredColumns[] = sprintf('%s.%s', $field['table'], $field['column']);
+
+            $entityName = $field['entityName'] ?: $field['column'];
+            $this->tableIgnoredEntities[] = sprintf('%s.%s', $field['table'], $entityName);
+        }
     }
 
-    public function isIgnoredField(string $field)
+    public function isIgnoredEntityField(string $field)
     {
-        $camelize = str_replace('_', '', ucwords($field, '_'));
-        $underscore = strtolower(preg_replace('%([a-z])([A-Z])%', '\1_\2', $field));
+        return in_array($field, $this->tableIgnoredEntities);
+    }
 
-        return in_array($field, $this->getTableIgnoreColumns())
-               || in_array($camelize, $this->getTableIgnoreColumns())
-               || in_array($underscore, $this->getTableIgnoreColumns());
+    public function isIgnoredColumn(string $field)
+    {
+        return in_array($field, $this->getTableIgnoredColumns());
     }
 
     public function createMetadataFactory()
